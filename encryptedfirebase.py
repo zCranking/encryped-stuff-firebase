@@ -1,6 +1,7 @@
 from tkinter import *
 from firebase import firebase
 from simplecrypt import encrypt, decrypt
+from tkinter import messagebox
 
 root = Tk()
 root.title("Firebase Encryption")
@@ -37,4 +38,21 @@ def login_window():
     btn_login = Button(login, text="Log In" , width = 5, height = 2, font=("Comic Sans MS", "10",))
     btn_login.place(relx=0.5, rely=0.5, anchor=CENTER)
     
-    
+def login():
+    global login_username_entry, login_password_entry
+    username = login_username_entry.get()
+    password = login_password_entry.get()
+    encrypted_password = hashlib.md5(password.encode())
+    hexidecimal_password = hexidigest(encrypted_password)
+    get_password = firebase.put("/", username, hexidecimal_password)
+    print(hexidecimal_password)
+    if(get_password != null or "none" or ""):
+        if(get_password == hexidecimal_password):
+            messagebox.showinfo(title="Message", message="Successfully Logged In")
+        
+        else:
+            messagebox.showinfo(title="Message", message="Please Check your password")
+            
+    else:
+        messsagebox.showinfo(title="Message", message="User not registered")
+        
